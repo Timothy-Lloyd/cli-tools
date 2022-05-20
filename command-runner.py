@@ -7,6 +7,7 @@ import io
 import time
 import getpass
 import vars
+import os
 from pyfiglet import Figlet
 
 company = vars.company
@@ -16,16 +17,35 @@ secret = vars.secret
 pt = vars.port
 device = vars.devicetype
 
+localtime = time.localtime()
+formattime = time.strftime("%d-%m-%Y %H:%M:%S", localtime)
+datetime = time.strftime("%d-%m-%Y", localtime)
 
 
 f = Figlet(font="standard", width=90)
 print (f.renderText(company + " Command Runner"))
+print ("Select mode, s = show/run commands, c = configuration commands:")
+mode = input()
 
 devices = dict()
-print("Enter command to run on all devices:")
-command = input()
-
-
+if mode == "s":
+	print("Enter command to run on all devices:")
+	command = input()
+	
+if mode == "c":
+	print("Enter configuration commands with care. When finished press Ctrl-D (Ctrl-Z on Windows) once to break then please wait.")
+	cmdset = []
+	while True:
+		try:
+			cmdline = input()
+		except EOFError:
+			break
+		cmdset.append(cmdline)
+		
+if not os.path.exists("output/command-runner"):
+	os.mkdir("output")
+	os.mkdir("output/command-runner")
+	
 
 file = open("devices","r")
 for line in file:
@@ -45,23 +65,35 @@ for dev_name, dev_address in devices.items():
 		}
 		net_connect = ConnectHandler(**sw)
 		net_connect.enable()
-		output = net_connect.send_command('term len 0')
-		output = net_connect.send_command(command)
-		localtime = time.localtime()
-		formattime = time.strftime("%d-%m-%Y %H:%M:%S", localtime)
-		datetime = time.strftime("%d-%m-%Y", localtime)
-		fi = open("output/cli output " + dev_name + " " + command.replace(" ","_") + " " + formattime + ".txt", "w")
-		fi.write("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
-		fi.close()
-		print("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
+		if mode == "c":
+			output = net_connect.send_config_set(cmdset)
+			print("\r\n##################\r\nConfiguration sent to " + dev_name + ":\r\n" + output + "\r\n##################\r\n")
+		
+		if mode == "s":
+			output = net_connect.send_command('term len 0')
+			output = net_connect.send_command(command)
+			fi = open(os.path.join("output/command-runner/cli output " + dev_name + " " + command.replace(" ","_") + " " + formattime + ".txt"), "w")
+			fi.write("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
+			fi.close()
+			print("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)	
 		net_connect.disconnect()
 	except:
-		fi = open("output/FAILED DEVICES" + " " + command.replace(" ","_") + " " + datetime + ".txt", "a")
-		fi.write("\r\n##################\r\nFAILED at " + formattime + " on device: " + dev_name + "\r\nCheck ssh access to: " + dev_address)
-		fi.close()
-		print("\r\n##################\r\n" + "!!!! " + dev_name + " is unreachable !!!!\r\nCheck SSH access to: " + dev_address + "##################\r\n" + "\r\n")
+		if mode == "c":
+			fi = open(os.path.join("output/command-runner/FAILED CONFIG DEVICES " + datetime + ".txt"), "a")
+			fi.write("\r\n##################\r\nFAILED at " + formattime + " on device: " + dev_name + "\r\nConfiguration attempted:\r\n" + output + "\r\nCheck ssh access to: " + dev_address)
+			fi.close()
+			print("\r\n##################\r\n" + "!!!! " + dev_name + " is unreachable !!!!\r\nCheck SSH access to: " + dev_address + "##################\r\n" + "\r\n")
+
+		if mode == "s":
+			fi = open(os.path.join("output/command-runner/FAILED DEVICES " + command.replace(" ","_") + " " + datetime + ".txt"), "a")
+			fi.write("\r\n##################\r\nFAILED at " + formattime + " on device: " + dev_name + "\r\nCheck ssh access to: " + dev_address)
+			fi.close()
+			print("\r\n##################\r\n" + "!!!! " + dev_name + " is unreachable !!!!\r\nCheck SSH access to: " + dev_address + "##################\r\n" + "\r\n")
 
 		continue
 
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\nCompleted\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")	
+if(mode == "s"):
+	print("\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\nShow/run command sent to all devices in list. Outputs have been saved to the output folder. Press enter to quit.\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n")
+if(mode == "c"):
+	print("\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\nConfiguration commands have been sent to all devices in list. Please verify if successful. Press enter to quit.\r\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n")
 input()
