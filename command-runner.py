@@ -42,10 +42,10 @@ if mode == "c":
 			break
 		cmdset.append(cmdline)
 		
-if not os.path.exists("output/command-runner"):
+if not os.path.exists("output"):
 	os.mkdir("output")
+if not os.path.exists("output/command-runner"):
 	os.mkdir("output/command-runner")
-	
 
 file = open("devices","r")
 for line in file:

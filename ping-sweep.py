@@ -52,9 +52,14 @@ for (a, i) in itertools.zip_longest(active_list, inactive_list):
 console = Console(record=True)
 console.print(table)
 
+if not os.path.exists("output"):
+	os.mkdir("output")
+if not os.path.exists("output/ping-sweep"):
+	os.mkdir("output/ping-sweep")
+
 htmloutput = console.export_html()
 output = html2text.html2text(htmloutput)
 
-fi = open("output/ping sweep " + subnet.replace("/","_") + " " + formattime + ".txt", "w")
+fi = open("output/ping-sweep/ping sweep " + subnet.replace("/","_") + " " + formattime + ".txt", "w")
 fi.write(output)
 fi.close()
