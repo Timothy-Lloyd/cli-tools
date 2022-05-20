@@ -14,6 +14,7 @@ usern = vars.username
 password = vars.password
 secret = vars.secret
 pt = vars.port
+device = vars.devicetype
 
 
 
@@ -34,7 +35,7 @@ for line in file:
 for dev_name, dev_address in devices.items():
 	try:
 		sw = {
-			'device_type': 'cisco_ios',
+			'device_type': device,
 			'ip':   dev_address.strip(),
 			'username': usern,
 			'password': password,
