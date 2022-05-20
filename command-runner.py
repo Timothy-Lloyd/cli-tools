@@ -4,8 +4,7 @@
 
 from netmiko import ConnectHandler
 import io
-import datetime
-import time 
+import time
 import getpass
 import vars
 from pyfiglet import Figlet
@@ -47,17 +46,17 @@ for dev_name, dev_address in devices.items():
 		net_connect.enable()
 		output = net_connect.send_command('term len 0')
 		output = net_connect.send_command(command)
-		ts = time.time()
-		st = datetime.datetime.fromtimestamp(ts).strftime('%d%m%Y-%H%M%S')
-		dt = datetime.datetime.fromtimestamp(ts).strftime('%d%m%Y')
-		fi = open("output/cli-output-" + dev_name + "-" +command.replace(" ","_") +"-"+st+".txt", "w")
+		localtime = time.localtime()
+		formattime = time.strftime("%d-%m-%Y %H:%M:%S", localtime)
+		datetime = time.strftime("%d-%m-%Y", localtime)
+		fi = open("output/cli output " + dev_name + " " + command.replace(" ","_") + " " + formattime + ".txt", "w")
 		fi.write("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
 		fi.close()
 		print("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
 		net_connect.disconnect()
 	except:
-		fi = open("output/FAILED DEVICES" + "-" +command.replace(" ","_") + "-" + dt + ".txt", "a")
-		fi.write("\r\n##################\r\nFAILED at " + st + " on device: " + dev_name + "\r\nCheck ssh access to: " + dev_address)
+		fi = open("output/FAILED DEVICES" + " " + command.replace(" ","_") + " " + datetime + ".txt", "a")
+		fi.write("\r\n##################\r\nFAILED at " + formattime + " on device: " + dev_name + "\r\nCheck ssh access to: " + dev_address)
 		fi.close()
 		print("\r\n##################\r\n" + "!!!! " + dev_name + " is unreachable !!!!\r\nCheck SSH access to: " + dev_address + "##################\r\n" + "\r\n")
 
