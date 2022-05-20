@@ -5,11 +5,14 @@ import io
 import datetime
 import time 
 import getpass
+import vars
 from pyfiglet import Figlet
 
-company = "Example Company"
-usern = 'arista'
-password = 'arista'
+company = vars.company
+usern = vars.username
+password = vars.password
+secret = vars.secret
+pt = vars.port
 
 
 
@@ -34,8 +37,8 @@ for dev_name, dev_address in devices.items():
 			'ip':   dev_address.strip(),
 			'username': usern,
 			'password': password,
-			'secret': password,
-			'port' : 22,
+			'secret': secret,
+			'port' : pt,
 			'verbose': False
 		}
 		net_connect = ConnectHandler(**sw)
