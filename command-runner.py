@@ -1,4 +1,6 @@
-#Note that before running this script, you need to create a folder called "Output" in the same directory that you intend to run this from.
+#Note that before running this script, you need to create a folder called "output" in the same directory that you intend to run this from.
+#Note2 please edit the "devices" file to match your devices.
+#Note3 please edit the "vars.py" file and adjust your credentials etc
 
 from netmiko import ConnectHandler
 import io
@@ -48,13 +50,13 @@ for dev_name, dev_address in devices.items():
 		ts = time.time()
 		st = datetime.datetime.fromtimestamp(ts).strftime('%d%m%Y-%H%M%S')
 		dt = datetime.datetime.fromtimestamp(ts).strftime('%d%m%Y')
-		fi = open("Output/CLI-Output-" + dev_name + "-" +command.replace(" ","_") +"-"+st+".txt", "w")
+		fi = open("output/cli-output-" + dev_name + "-" +command.replace(" ","_") +"-"+st+".txt", "w")
 		fi.write("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
 		fi.close()
 		print("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
 		net_connect.disconnect()
 	except:
-		fi = open("Output/FAILED DEVICES" + "-" +command.replace(" ","_") + "-" + dt + ".txt", "a")
+		fi = open("output/FAILED DEVICES" + "-" +command.replace(" ","_") + "-" + dt + ".txt", "a")
 		fi.write("\r\n##################\r\nFAILED at " + st + " on device: " + dev_name + "\r\nCheck ssh access to: " + dev_address)
 		fi.close()
 		print("\r\n##################\r\n" + "!!!! " + dev_name + " is unreachable !!!!\r\nCheck SSH access to: " + dev_address + "##################\r\n" + "\r\n")
