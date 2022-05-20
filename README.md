@@ -15,4 +15,4 @@ Edit the hosts file with the list of devices which are to have the single comman
 Edit the vars.py file with your credentials.
 Once the hosts and vars files are complete, simply run the application, it will ask for the command to be entered and then attempt to perform this on each line in the hosts file.
 
-*Originally forked from another source but I have used for so long I cannot recall.
+*Originally forked from another source but I have used and tweaked for so long I cannot recall.
