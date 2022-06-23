@@ -1,6 +1,9 @@
 # CLI-Tools*
 CLI-Tools is a collection of simple CLI tools designed to be used on network devices such as routers, switches, firewalls etc.  
-_*Originally forked from various sources but I have used and tweaked for so long I cannot recall._
+_*Originally forked from various sources but I have used and tweaked for so long I cannot recall._  
+
+**To do list:**  
+1. Add configuration best practice comparison tool
 
 ## Requirements:
 python3  
