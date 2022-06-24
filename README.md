@@ -3,7 +3,8 @@ CLI-Tools is a collection of simple CLI tools designed to be used on network dev
 _*Originally forked from various sources but I have used and tweaked for so long I cannot recall._  
 
 **To do list:**  
-1. Add configuration best practice comparison tool
+1. Add getpass code
+2. Add configuration best practice comparison tool
 
 ## Requirements:
 python3  
