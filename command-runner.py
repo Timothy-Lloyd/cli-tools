@@ -77,10 +77,10 @@ for dev_name, dev_address in devices.items():
 		if mode == "s":
 			output = net_connect.send_command('term len 0')
 			output = net_connect.send_command(command)
-			fi = open(os.path.join("output/command-runner/cli output " + dev_name + " " + command.replace(" ","_") + " " + formattime + ".txt"), "w")
-			fi.write("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)
+			fi = open(os.path.join("output/command-runner/cli output " + command.replace(" ","_") + " " + datetime + ".txt"), "a")
+			fi.write("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n\r\n" + output + "\r\n##################\r\n\r\n")
 			fi.close()
-			print("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n##################\r\n" + "\r\n" + output)	
+			print("\r\n##################\r\n" + dev_name + "\r\n" + command + "\r\n\r\n" + output + "\r\n##################\r\n\r\n")	
 		if mode == "v":
 			output = net_connect.send_command('term len 0')
 			output = net_connect.send_command('show run')
