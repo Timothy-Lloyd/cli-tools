@@ -11,9 +11,6 @@ import os
 from pyfiglet import Figlet
 
 company = vars.company
-usern = vars.username
-password = vars.password
-secret = vars.secret
 pt = vars.port
 device = vars.devicetype
 
@@ -23,8 +20,13 @@ datetime = time.strftime("%d-%m-%Y", localtime)
 
 
 f = Figlet(font="standard", width=90)
-print (f.renderText(company + " Command Runner"))
-print ("Select mode, s = show/run, c = configuration or v = verification commands:")
+print(f.renderText(company + " Command Runner"))
+print("Please enter the credentials to perform the tasks required:\r\n")
+print("Username: ", end="")
+usern = str(input())
+password = getpass.getpass()
+secret = getpass.getpass(prompt='Secret: ')
+print("\r\nSelect mode, s = show/run, c = configuration or v = verification commands:")
 mode = input()
 
 devices = dict()
