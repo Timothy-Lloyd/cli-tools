@@ -5,12 +5,12 @@ _*Originally forked from various sources but I have used and tweaked for so long
 **To do list:**  
 1. Add configuration best practice comparison tool
 
-## Requirements:
-python3  
-python3-netmiko  
-python3-pyfiglet  
-python3-rich  
-html2text  
+## Requirements (tested versions):
+python3 (3.8.10)  
+python3-netmiko (2.4.2)  
+python3-pyfiglet  (0.8.post0)
+python3-rich  (12.4.1)
+html2text (2020.1.16)  
 
 ## Prerequisites:
 Create folder in the cli-tools folder called "output" - this is where the tools store output.  
